@@ -13,7 +13,7 @@ class TransferServiceImpl(
     private val accountRepository: AccountRepository
 ) : TransferService {
     override suspend fun transfer(from: UUID, to: UUID, amount: BigDecimal) {
-        if (amount < BigDecimal.ZERO) throw BadRequestException("Transfer amount must be greater than zero")
+        if (amount <= BigDecimal.ZERO) throw BadRequestException("Transfer amount must be greater than zero")
 
         lockService.lock(from, to) {
             val fromAccount = accountRepository.getAccount(from)
